@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Catalogo_de_Carros.Views.DetalheCarroPage"
+             xmlns:viewModels="clr-namespace:Catalogo_de_Carros.ViewModels"
+             xmlns:fonts="clr-namespace:Catalogo_de_Carros.Helpers"
+             Title="Detalhes do veículo"
+             x:DataType="viewModels:DetalheCarroViewModel">
+    <VerticalStackLayout Margin="20"
+                         Spacing="10">
+        <Border Grid.RowSpan="2"
+        StrokeShape="RoundRectangle 10,10,10,10">
+            <Grid>
+                <Image Source="{Binding Car.Image}"
+                       Aspect="AspectFill"/>
+
+                <Label HorizontalOptions="End"
+                       Text="{x:Static fonts:FontAwesomeSolid.Star}"
+                       FontFamily="FontAwesomeSolid"
+                       TextColor="Yellow"
+                       Margin="10"
+                       IsVisible="{Binding Car.Favorite}"/>
+            </Grid>
+            
+        </Border>
+
+        <Label Text="Ficha Técnica do veículo"
+               HorizontalOptions="Center"
+               FontSize="Medium"
+               FontAttributes="Bold"/>
+
+        <Grid ColumnDefinitions="*, *"
+              RowDefinitions="Auto, Auto, Auto"
+              RowSpacing="10"
+              ColumnSpacing="10">
+            <Border StrokeShape="RoundRectangle 10,10,10,10"
+                    StrokeThickness="1">
+                <HorizontalStackLayout Spacing="10"
+                                       Padding="5">
+                    <Label Grid.Column="1" Text="Modelo:"/>
+                    <Label Grid.Column="1" Text="{Binding Car.Model}"/>
+                </HorizontalStackLayout>
+            </Border>
+            <Border  Grid.Column="1"
+                    StrokeShape="RoundRectangle 10,10,10,10"
+                    StrokeThickness="1">
+                <HorizontalStackLayout Spacing="10"
+                            Padding="5">
+                    <Label Grid.Column="1" Text="Tipo:"/>
+                    <Label Grid.Column="1" Text="{Binding Car.Class}"/>
+                </HorizontalStackLayout>
+            </Border>
+            <Border Grid.Column="0"
+                    Grid.Row="1"
+                    StrokeShape="RoundRectangle 10,10,10,10"
+                    StrokeThickness="1">
+                <HorizontalStackLayout Spacing="10"
+                            Padding="5">
+                    <Label Grid.Column="1" Text="Ano:"/>
+                    <Label Grid.Column="1" Text="{Binding Car.Year}"/>
+                </HorizontalStackLayout>
+            </Border>
+            <Border Grid.Column="1"
+                    Grid.Row="1"
+                    StrokeShape="RoundRectangle 10,10,10,10"
+                    StrokeThickness="1">
+                <HorizontalStackLayout Spacing="10"
+                 Padding="5">
+                    <Label Grid.Column="1" Text="Cilindros:"/>
+                    <Label Grid.Column="1" Text="{Binding Car.Cylinders}"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border Grid.Column="0"
+                    Grid.Row="2"
+                    StrokeShape="RoundRectangle 10,10,10,10"
+                    StrokeThickness="1">
+                <HorizontalStackLayout Spacing="10"
+                                       Padding="5">
+                    <Label Grid.Column="1" Text="Transmição:"/>
+                    <Label Grid.Column="1" Text="{Binding Car.Transmission}"/>
+                </HorizontalStackLayout>
+            </Border>
+            <Border Grid.Column="1"
+                    Grid.Row="2"
+                    StrokeShape="RoundRectangle 10,10,10,10"
+                    StrokeThickness="1">
+            <HorizontalStackLayout Spacing="10"
+                                   Padding="5">
+                    <Label Grid.Column="1" Text="Cilindros:"/>
+                    <Label Grid.Column="1" Text="{Binding Car.Displacement}"/>
+                </HorizontalStackLayout>
+            </Border>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

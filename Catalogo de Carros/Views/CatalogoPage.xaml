@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Catalogo_de_Carros.Models"
+             xmlns:viewModels="clr-namespace:Catalogo_de_Carros.ViewModels"
+             xmlns:fonts="clr-namespace:Catalogo_de_Carros.Helpers"
+             x:Class="Catalogo_de_Carros.Views.CatalogoPage"
+             Title="Catálogo de Veículos">
+    
+    <ContentPage.BindingContext>
+        <viewModels:CatalogoViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Pesquisar" Command="{Binding AtiveFiltersCommand}" CommandParameter="0"/>
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <Grid RowDefinitions="Auto, *">
+            <Button Text="Limpar filtro"
+                    BackgroundColor="Transparent"
+                    Command="{Binding CLearFilterCommand}"
+                    TextColor="Black"
+                    HorizontalOptions="End"
+                    IsVisible="{Binding ClearButtonFilterVisible}"/>
+            <Border StrokeShape="RoundRectangle 10,10,10,10"
+                    StrokeThickness="1"
+                    Margin="10"
+                    IsVisible="{Binding FilterTypesVisible}">
+                <VerticalStackLayout>
+                    <Grid Padding="10"
+                          RowDefinitions="Auto,AUto"
+                          ColumnDefinitions="*,*,*"
+                          RowSpacing="10"
+                          ColumnSpacing="10">
+                        <Label Text="Pesquisar por:"/>
+                        <Button Grid.Row="1"
+                                Grid.Column="0" 
+                                Text="Ano" 
+                                Command="{Binding AtiveFiltersCommand}" 
+                                CommandParameter="1"/>
+                        <Button Grid.Row="1"
+                                Grid.Column="1" 
+                                Text="Modelo" 
+                                Command="{Binding AtiveFiltersCommand}"
+                                CommandParameter="2"/>
+                        <Button Grid.Row="1"
+                                Grid.Column="2"
+                                Text="Favoritos" 
+                                Command="{Binding SearchForFavoritesCommand}"/>
+                    </Grid>
+
+                    <Grid Padding="10"
+                          RowDefinitions="Auto,Auto, Auto"
+                          RowSpacing="10"
+                          ColumnSpacing="10"
+                          IsVisible="{Binding FilterForYear}">
+                        <Label Text="Digite o ano que deseja pesquisar:"/>
+                        <Entry Grid.Row="1" 
+                               Placeholder="Digite o ano do veiculo:"
+                               Keyboard="Numeric"
+                               MaxLength="4"
+                               Text="{Binding EntryFilterYear}"/>
+                        <Button Grid.Row="2"
+                                Grid.Column="0" 
+                                Text="Pesquisar" 
+                                Command="{Binding SearchForYearCommand}"/>
+                    </Grid>
+
+                    <Grid Padding="10"
+                          RowDefinitions="Auto,Auto,Auto"
+                          RowSpacing="10"
+                          ColumnSpacing="10" IsVisible="{Binding FilterForModel}">
+                        <Label Text="Digite onome do modelo que deseja pesquisar:"/>
+                        <Entry Grid.Row="1" 
+                               Placeholder="Digite o nome do veículo:"
+                               Text="{Binding EntryFilterModel}"/>
+                        <Button Grid.Row="2"
+                                Grid.Column="0" 
+                                Text="Pesquisar" 
+                                Command="{Binding SearchForModelCommand}"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <ListView Grid.Row="1"
+                      ItemsSource="{Binding ListCars}"
+                      SeparatorVisibility="None"
+                      RowHeight="90"
+                      SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Car">
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Border StrokeShape="RoundRectangle 10,10,10,10"
+                                        StrokeThickness="0">
+                                    <Border.Shadow>
+                                        <Shadow Brush="Black"
+                                                Offset="0.5,0.5"
+                                                Opacity="0.8" />
+                                    </Border.Shadow>
+                                    <Grid RowDefinitions="Auto,Auto"
+                                          ColumnDefinitions="Auto, *, Auto"
+                                          Margin="10"
+                                          ColumnSpacing="10">
+
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding DetalheCarroCommand, Source={RelativeSource AncestorType={x:Type viewModels:CatalogoViewModel}}}"
+                                                                  CommandParameter="{Binding .}"/>
+                                        </Grid.GestureRecognizers>
+
+                                        <Border Grid.RowSpan="2"
+                                                StrokeShape="RoundRectangle 10,10,10,10">
+                                            <Image Source="{Binding Image}"
+                                                   Aspect="AspectFill"
+                                                   HeightRequest="50"
+                                                   WidthRequest="60"/>
+                                        </Border>
+
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Model}"
+                                               FontAttributes="Bold" />
+                                        <Label Grid.Row="1"
+                                               Grid.Column="1"
+                                               Text="{Binding Cylinders}" />
+
+                                        <Button Grid.Row="0"
+                                                Grid.RowSpan="2"
+                                                Grid.Column="2"
+                                                Padding="10"
+                                                BackgroundColor="Transparent"
+                                                Command="{Binding FavorateCarCommand, Source={RelativeSource AncestorType={x:Type viewModels:CatalogoViewModel}}}"
+                                                CommandParameter="{Binding .}"
+                                                TextColor="Black"
+                                                HorizontalOptions="End"
+                                                VerticalOptions="Center"
+                                                Text="{x:Static fonts:FontAwesomeRegular.Star}"
+                                                FontFamily="FontAwesomeRegular">
+                                            <Button.Triggers >
+                                                <DataTrigger TargetType="Button"
+                                                             Binding="{Binding Favorite}"
+                                                             Value="True">
+                                                    <Setter Property="Text" Value="{x:Static fonts:FontAwesomeSolid.Star}" />
+                                                    <Setter Property="TextColor" Value="Yellow" />
+                                                    <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+                                                </DataTrigger>
+                                            </Button.Triggers>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
